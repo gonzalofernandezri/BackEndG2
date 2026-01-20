@@ -1,33 +1,33 @@
 <?php
 
-function conexionBBDD(){
-    define('SERVIDOR', 'localhost');
-    define('BBDD', 'gamefest');
-    define('USUARIO', 'root');
-    define('CLAVE', '');
 
-    $mysqli = new mysqli(SERVIDOR, USUARIO, CLAVE, BBDD);
+function conexionBBDD() {
 
-    $mysqli->set_charset('utf8');
+$nombreServidor = "localhost";
+$nombreUser = "root";
+$contraseña = "";
+$nombreBD = "gamefest";
 
-    $sql= "SELECT * FROM user_events";
-    $resultado = $mysqli->query($sql);
 
-     print "<table>\n";
-    while($fila = $resultado->fetch_assoc()){
-        print "<tr>\n";
-        print "<td>$fila[user_id]</td>\n";
-        print "<td>$fila[event_id]</td>\n";
-        print "<td>$fila[created_at]</td>\n";
+$conexion = mysqli_connect($nombreServidor, $nombreUser, $contraseña, $nombreBD )
+or die("Ha ocurrido un error a la hora de conectar con la bbdd");
 
-        print "</tr>\n";
-    }
-    print "</table>\n";
-    $resultado->free();
-    $mysqli->close();
+// $datos = json_decode($json, true);
+
+// foreach ($datos as $row) {
+//     myslqi_query($conexion,"INSERT INTO usuarios (document, firstName, lastName, gender, email, phone, productPurchasedTag) 
+//     VALUES ('".$row['document']."',".$row['firstName'].",'".$row['lastName']."','".$row['gender']."','".$row['email']."',".$row['phone']."',".$row['productPurchasedTag'].")");
+// }
+
+return $conexion;
+
 }
 
-conexionBBDD();
+function cerrarConexion($conexion) {
+
+ mysqli_close($conexion);
+
+}
 
 
 ?>
