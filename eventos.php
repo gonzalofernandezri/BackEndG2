@@ -48,7 +48,37 @@ function mostrarEventos($tipo = null, $fecha = null, $plazas = null)
 
 }
 
-$json = mostrarEventos();
+function aniadirEventos($titulo, $tipo, $fecha, $hora, $plazasLibres, $imagen, $descripcion, $created_by, $created_at){
 
-echo $json;
+    $mysqli = conexionBBDD();
+    $mysqli->set_charset("utf8mb4");
+
+
+    $sql = "INSERT into events (titulo, tipo, fecha, hora, plazasLibres, imagen, descripcion, created_by, created_at) VALUES 
+    (?,?,?,?,?,?,?,?,?)";
+
+    $stmt = $mysqli->prepare($sql);
+
+   
+    $tipos = "ssssissis";
+        $stmt->bind_param(
+        $tipos,
+        $titulo,
+        $tipo,
+        $fecha,
+        $hora,
+        $plazasLibres,
+        $imagen,
+        $descripcion,
+        $created_by,
+        $created_at
+    );
+
+
+    $stmt->execute();
+    $stmt->close();
+    cerrarConexion($mysqli);
+
+}
+
 ?>
