@@ -27,4 +27,4 @@ function mostrarEventos($tipo, $fecha, $plazas)
 $json = mostrarEventos("","","");
 
 echo $json;
-?>
+?> 
