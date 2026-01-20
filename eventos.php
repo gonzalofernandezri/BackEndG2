@@ -1,30 +1,54 @@
 <?php
 require_once "conexion.php";
 
-function mostrarEventos($tipo, $fecha, $plazas)
+function mostrarEventos($tipo = null, $fecha = null, $plazas = null)
 {
     $mysqli = conexionBBDD();
     $mysqli->set_charset("utf8mb4");
 
-    $sql = "SELECT * FROM events";
+    $sql = "SELECT * FROM events WHERE 1=1";
+    $params = [];
+    $types = "ss";
 
-    $resultado = $mysqli->query($sql);
+    if ($tipo != null) {
+        $sql .= " AND tipo = ?";
+        $params[] = $tipo;
+        $types .= "s"; // string
+    }
+
+    if ($fecha != null) {
+        $sql .= " AND fecha = ?";
+        $params[] = $fecha;
+        $types .= "s"; // string 
+    }
+
+    if ($plazas === true) {
+        $sql .= " AND plazas > 0";
+    }
+
+    $stmt = $mysqli->prepare($sql);
+
+    if (!empty($params)) {
+        $stmt->bind_param($types, ...$params);
+    }
+
+    $stmt->execute();
+    $resultado = $stmt->get_result();
 
     $events = [];
-
     if ($resultado) {
         while ($fila = $resultado->fetch_assoc()) {
             $events[] = $fila;
         }
     }
-    //$stmt->close();
+    $stmt->close();
     cerrarConexion($mysqli);
 
     return json_encode($events, JSON_UNESCAPED_UNICODE);
 
 }
 
-$json = mostrarEventos("","","");
+$json = mostrarEventos();
 
 echo $json;
-?> 
+?>
