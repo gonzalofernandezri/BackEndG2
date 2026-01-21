@@ -1,7 +1,7 @@
 <?
 require_once "conexion.php";
 
-function aniadirEventos($username, $email, $password_hash, $role, $created_at)
+function registroUsuario($username, $email, $password, $role, $created_at)
 {
 
     $mysqli = conexionBBDD();
@@ -13,10 +13,10 @@ function aniadirEventos($username, $email, $password_hash, $role, $created_at)
 
     $stmt = $mysqli->prepare($sql);
 
+    $password_hash = password_hash($password, PASSWORD_BCRYPT);
 
-    $tipos = "sssss";
     $stmt->bind_param(
-        $tipos,
+        "sssss",
         $username,
         $email,
         $password_hash,
@@ -30,5 +30,7 @@ function aniadirEventos($username, $email, $password_hash, $role, $created_at)
     cerrarConexion($mysqli);
 
 }
+
+registroUsuario("gonzalo", "gonzalo@gmail.com", "12qw34er", "USER", "2026-01-20 20:53:30")
 
 ?>
