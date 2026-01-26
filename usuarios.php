@@ -35,7 +35,6 @@ function registroUsuario($username, $email, $password, $role, $created_at)
 
     $stmt->close();
     cerrarConexion($mysqli);
-    return $user_id;
 }
 //ejemplo de usuario a registrar
 // $user_id = registroUsuario(
