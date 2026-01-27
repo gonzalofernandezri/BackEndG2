@@ -2,7 +2,7 @@
 
 
 //registro de usuario 
-session_start();
+
 require_once "conexion.php";
 
 function registroUsuario($username, $email, $password, $role, $created_at)
@@ -23,7 +23,7 @@ function registroUsuario($username, $email, $password, $role, $created_at)
 
     $password_hash = password_hash($password, PASSWORD_BCRYPT);
 
- 
+
     $stmt->bind_param("sssss", $username, $email, $password_hash, $role, $created_at);
 
 
@@ -31,10 +31,11 @@ function registroUsuario($username, $email, $password, $role, $created_at)
         die("Error al ejecutar la consulta: " . $stmt->error);
     }
 
-    echo "Usuario registrado correctamente: $username ($email)";
 
     $stmt->close();
     cerrarConexion($mysqli);
+
+    return "Usuario registrado correctamente: $username ($email)";
 }
 //ejemplo de usuario a registrar
 // $user_id = registroUsuario(
@@ -68,22 +69,18 @@ require_once "conexion.php";
 
 
 
-function login($username,$password){
+function login($username, $password)
+{
     $mysqli = conexionBBDD();
     $mysqli->set_charset("utf8mb4");
 
 
-    $sql = "SELECT * FROM users WHERE username = ? AND password_hash = ?";
-    $params = [$username, $password];
-    $types = "ss";
-
-
-
+    $sql = "SELECT * FROM users WHERE username = ?";
 
     $stmt = $mysqli->prepare($sql);
 
 
-    $stmt->bind_param($types, ...$params);
+    $stmt->bind_param("s", $username);
 
 
     $stmt->execute();
@@ -92,19 +89,26 @@ function login($username,$password){
     $resultado = $stmt->get_result();
 
 
-    $users = [];
-    if ($resultado) {
-        while ($fila = $resultado->fetch_assoc()) {
-            $users[] = $fila;
+    $usuario = null;
+    if ($resultado && $resultado->num_rows === 1) {
+        $usuario = $resultado->fetch_assoc();
+
+        // 🔑 Verificación de contraseña
+        if (password_verify($password, $usuario['password_hash'])) {
+            // Login correcto
+            $stmt->close();
+            cerrarConexion($mysqli);
+            return json_encode($usuario, JSON_UNESCAPED_UNICODE);
+        } else {
+            $stmt->close();
+            cerrarConexion($mysqli);
+            return false; // contraseña incorrecta
         }
     }
+    
     $stmt->close();
     cerrarConexion($mysqli);
-
-
-    return json_encode($users, JSON_UNESCAPED_UNICODE);
-
-
+    return false;
 }
 
 //ejemplo de inicio de sesion
@@ -132,21 +136,22 @@ function login($username,$password){
 
 require_once "conexion.php";
 
-function apuntarseEvento($user_id,$event_id,$created_at) {
+function apuntarseEvento($user_id, $event_id, $created_at)
+{
 
-  $mysqli = conexionBBDD();
-  $mysqli->set_charset("utf8mb4");
+    $mysqli = conexionBBDD();
+    $mysqli->set_charset("utf8mb4");
 
     $sql = "INSERT INTO user_events (user_id, event_id, created_at) VALUES (?,?,?)";
 
 
 
-   $stmt = $mysqli->prepare($sql);
+    $stmt = $mysqli->prepare($sql);
 
-   
+
     $tipos = "iis";
 
-        $stmt->bind_param(
+    $stmt->bind_param(
         $tipos,
         $user_id,
         $event_id,
@@ -166,12 +171,13 @@ function apuntarseEvento($user_id,$event_id,$created_at) {
 
 //cierre de sesion
 
-function cerrarSesion(){
-session_start();
-$_SESSION = [];
+function cerrarSesion()
+{
+    session_start();
+    $_SESSION = [];
 
 
-session_destroy();
+    session_destroy();
 }
 
 // header("Location: login.php"); donde rediridir en un futuro al cerrar sesiónmn
