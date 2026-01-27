@@ -35,7 +35,6 @@ function registroUsuario($username, $email, $password, $role, $created_at)
 
     $stmt->close();
     cerrarConexion($mysqli);
-    return $user_id;
 }
 //ejemplo de usuario a registrar
 // $user_id = registroUsuario(
@@ -69,38 +68,45 @@ require_once "conexion.php";
 
 
 
-function loginUsuarios($email,$password) {
+function login($username,$password){
     $mysqli = conexionBBDD();
     $mysqli->set_charset("utf8mb4");
 
-$sql = "SELECT id, username, password_hash FROM users WHERE email = ?";
+
+    $sql = "SELECT * FROM users WHERE username = ? AND password_hash = ?";
+    $params = [$username, $password];
+    $types = "ss";
 
 
 
 
-
-$stmt = $mysqli->prepare($sql);
-
-$stmt->bind_param("s",$email);
+    $stmt = $mysqli->prepare($sql);
 
 
-$stmt->execute();
+    $stmt->bind_param($types, ...$params);
 
 
-$stmt->bind_result( $id, $username, $password_hash);
+    $stmt->execute();
 
-if($stmt->fetch()) {
-    if(password_verify($password, $password_hash))
 
-    return [
-        "id" => $id,
-        "username" => $username
+    $resultado = $stmt->get_result();
 
-    ];
+
+    $users = [];
+    if ($resultado) {
+        while ($fila = $resultado->fetch_assoc()) {
+            $users[] = $fila;
+        }
+    }
+    $stmt->close();
+    cerrarConexion($mysqli);
+
+
+    return json_encode($users, JSON_UNESCAPED_UNICODE);
+
+
 }
-cerrarConexion($mysqli);
 
-}
 //ejemplo de inicio de sesion
 // $resultado= loginUsuarios("gonzalo@gmail.com","12qtw34er");
 
