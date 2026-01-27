@@ -7,29 +7,17 @@ function  mostrarJuegos($titulo = null, $genero = null, $plataforma = null)
     $mysqli = conexionBBDD();
     $mysqli->set_charset("utf8mb4");
 
-    $sql = "SELECT * FROM games WHERE 1=1";
-    $params = [];
-    $types = "";
 
-    if ($titulo != null) {
-        $sql .= " AND titulo = ?";
-        $params[] = $titulo;
-        $types .= "s"; // string
-    }
+    $sql = "SELECT * FROM games WHERE titulo LIKE ? OR genero LIKE ? OR plataformas LIKE ?";
+    $params = ["%".$titulo."%","%".$genero."%","%".$plataforma."%"];
+    $types = "sss";
 
-    if ($genero != null) {
-        $sql .= " AND genero = ?";
-        $params[] = $genero;
-        $types .= "s"; // string 
-    }
 
-    if ($plataforma != null) {
-        $sql .= " AND plataformas LIKE ?";
-        $params[] = "%$plataforma%";
-        $types .= "s"; // string 
-    }
 
+    
     $stmt = $mysqli->prepare($sql);
+
+   
 
     if (!empty($params)) {
         $stmt->bind_param($types, ...$params);
@@ -53,4 +41,5 @@ function  mostrarJuegos($titulo = null, $genero = null, $plataforma = null)
 
 // echo mostrarJuegos(null,"Sandbox")
 
+    // echo mostrarJuegos("M","M")
 ?>

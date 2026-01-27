@@ -6,9 +6,9 @@ require_once "juegos.php";
 
 
 
-$titulo      = $_GET['titulo']   ?? null;
-$genero  = $_GET['genero']  ?? null;
-$plataforma  = $_GET['plataformas']  ?? null;
+$titulo      = $_GET['query']   ?? null;
+$genero  = $_GET['query']  ?? null;
+$plataforma  = $_GET['query']  ?? null;
 
 
 
