@@ -2,7 +2,6 @@
 
 
 //registro de usuario 
-session_start();
 require_once "conexion.php";
 
 function registroUsuario($username, $email, $password, $role, $created_at)
@@ -37,6 +36,9 @@ function registroUsuario($username, $email, $password, $role, $created_at)
     cerrarConexion($mysqli);
     return $user_id;
 }
+
+
+
 //ejemplo de usuario a registrar
 // $user_id = registroUsuario(
 //     "gonzalo",
@@ -70,6 +72,7 @@ require_once "conexion.php";
 
 
 function loginUsuarios($email,$password) {
+
     $mysqli = conexionBBDD();
     $mysqli->set_charset("utf8mb4");
 
