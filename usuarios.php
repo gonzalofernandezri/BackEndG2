@@ -171,14 +171,14 @@ function apuntarseEvento($user_id, $event_id, $created_at)
 
 //cierre de sesion
 
-function cerrarSesion()
-{
-    session_start();
-    $_SESSION = [];
+// function cerrarSesion()
+// {
+//     session_start();
+//     $_SESSION = [];
 
 
-    session_destroy();
-}
+//     session_destroy();
+// }
 
 // header("Location: login.php"); donde rediridir en un futuro al cerrar sesiónmn
 // exit;
