@@ -6,26 +6,22 @@ function desapuntarEventos($idUsuario, $idEvento){
     $mysqli->set_charset("utf8mb4");
 
 
-$sql = "DELETE FROM users_events (user_id, event_id)
-     VALUES (?,?)";
+    $sql = "DELETE FROM user_events WHERE user_id = ? AND event_id = ?";
 
-$stmt = $mysqli->prepare($sql);
+    $stmt = $mysqli->prepare($sql);
 
 
-if (!$stmt) {
+    if (!$stmt) {
         die("Error en preparación de la consulta: " . $mysqli->error);
     }
 
 
+    $stmt->bind_param("ss", $idUsuario,  $idEvento);
 
-$stmt->bind_param("ss", $idUsuario,  $idEvento);
+    $stmt->execute();
 
-
-
-
-$stmt->close();
-return "Usuario desapuntado correctamente";
+    $stmt->close();
+    return "Usuario desapuntado correctamente";
 }
-
 
 ?>
