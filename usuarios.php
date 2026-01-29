@@ -9,7 +9,7 @@ function registroUsuario($username, $email, $password, $role, $created_at)
 {
 
     $mysqli = conexionBBDD();
-    $mysqli->set_charset("utf8mb4");
+    $mysqli->set_charset(charset: "utf8mb4");
 
     $sql = "INSERT INTO users (username, email, password_hash, role, created_at)
      VALUES (?,?,?,?,?)";
