@@ -1,6 +1,4 @@
 <?php
-
-
 //registro de usuario 
 
 require_once "conexion.php";
@@ -37,38 +35,8 @@ function registroUsuario($username, $email, $password, $role, $created_at)
 
     return "Usuario registrado correctamente: $username ($email)";
 }
-//ejemplo de usuario a registrar
-// $user_id = registroUsuario(
-//     "gonzalo",
-//     "gonzalo@gmail.com",
-//     "12qw34er",
-//     "USER",
-//     date("Y-m-d H:i:s")
-// );
-
-
-// $_SESSION["user_id"] = $user_id;
-// $_SESSION["username"] = "gonzalo";
-// $_SESSION["role"] = "USER";
-
-
-// header("Location: dashboard.php");  en un futuro para redirigir al iniciar sesion
-// exit;
-
-
-
-
-
-
-
 
 // inicio de sesion 
-
-require_once "conexion.php";
-
-
-
-
 function login($username, $password)
 {
     $mysqli = conexionBBDD();
@@ -111,30 +79,7 @@ function login($username, $password)
     return false;
 }
 
-//ejemplo de inicio de sesion
-// $resultado= loginUsuarios("gonzalo@gmail.com","12qtw34er");
-
-// if($resultado){
-
-
-
-
-//     $_SESSION["user_id"]  = $resultado["id"];
-//     $_SESSION["username"] = $resultado["username"];
-
-//     echo "sesion iniciada correctamente";
-
-// }else
-
-// echo "usuario o contraseña icnorrecto";
-// 
-
-
-
 //apuntarse a evento 
-
-
-require_once "conexion.php";
 
 function apuntarseEvento($user_id, $event_id, $created_at)
 {
@@ -170,23 +115,6 @@ function apuntarseEvento($user_id, $event_id, $created_at)
 
 }
 
-// ejemplo de apuntarse a evento
-// apuntarseEvento(1,8,date("Y-m-d H:i:s"));
-
-
-//cierre de sesion
-
-// function cerrarSesion()
-// {
-//     session_start();
-//     $_SESSION = [];
-
-
-//     session_destroy();
-// }
-
-// header("Location: login.php"); donde rediridir en un futuro al cerrar sesiónmn
-// exit;
-
+?>
 
 
