@@ -142,20 +142,25 @@ function apuntarseEvento($user_id, $event_id, $created_at)
     $mysqli = conexionBBDD();
     $mysqli->set_charset("utf8mb4");
 
-    $sql = "INSERT INTO user_events (user_id, event_id, created_at) VALUES (?,?,?) FROM events WHERE id = ? AND plazas_disponibles > 0;";
-
-
+    $sql = "
+        INSERT INTO user_events (user_id, event_id, created_at)
+        SELECT ?, ?, ?
+        FROM events
+        WHERE id = ?
+        AND plazasLibres > 0
+    ";
 
     $stmt = $mysqli->prepare($sql);
 
 
-    $tipos = "iis";
+    $tipos = "iisi";
 
     $stmt->bind_param(
         $tipos,
         $user_id,
         $event_id,
-        $created_at
+        $created_at,
+        $event_id
     );
 
 
