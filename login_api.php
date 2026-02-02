@@ -6,8 +6,8 @@ header("Content-Type: application/json; charset=UTF-8");
 require_once "usuarios.php";
 
 
-$username   = $_GET['username']   ?? null;
-$password  = $_GET['password']  ?? null;
+$username   = $_POST['username']   ?? null;
+$password  = $_POST['password']  ?? null;
 
 
 
@@ -26,9 +26,6 @@ if (count($users) > 0) {
 
     echo json_encode([
         'success' => true,
-        'user_id' => $users['id'],
-        'username' => $users['username'],
-        'role' => $users['role'], 
         'session' => $_SESSION 
     ]);
 } else {
