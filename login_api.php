@@ -16,19 +16,20 @@ $users = json_decode($usersJson, true);
 //var_dump($users);
 if (count($users) > 0) {
 
+    session_regenerate_id(true);
+
     $_SESSION['user_id']   = $users['id'];
     $_SESSION['username']  = $users['username'];
     $_SESSION['role']      = $users['role'];   
-
     $_SESSION['logged_in'] = true;
-
-
+ 
 
     echo json_encode([
         'success' => true,
         'user_id' => $users['id'],
         'username' => $users['username'],
-        'role' => $users['role']  
+        'role' => $users['role'], 
+        'session' => $_SESSION 
     ]);
 } else {
     echo json_encode([
