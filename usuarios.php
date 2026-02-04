@@ -115,6 +115,31 @@ function apuntarseEvento($user_id, $event_id, $created_at)
 
 }
 
+
+function deshabilitadoEvento($user_id, $event_id){
+    $mysqli = conexionBBDD();
+    $mysqli->set_charset("utf8mb4");
+
+    $sql = "SELECT 1 FROM user_events WHERE user_id = ? AND event_id = ? LIMIT 1";
+    $stmt = $mysqli->prepare($sql);
+
+    if (!$stmt) {
+        cerrarConexion($mysqli);
+        throw new Exception("Error preparando la consulta: " . $mysqli->error);
+    }
+
+    $stmt->bind_param("ii", $user_id, $event_id);
+    $stmt->execute();
+
+    $resultado = $stmt->get_result();
+    $apuntado = $resultado->num_rows > 0;
+    $stmt->close();
+    cerrarConexion($mysqli);
+
+    return $apuntado; // true o false
+}
+
+//echo deshabilitadoEvento("9","2")
 ?>
 
 
