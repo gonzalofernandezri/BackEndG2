@@ -3,9 +3,9 @@
 
 function conexionBBDD() {
 
-$nombreServidor = "localhost";
+$nombreServidor = "mysql";
 $nombreUser = "root";
-$contraseña = "";
+$contraseña = "pass";
 $nombreBD = "gamefest";
 
 

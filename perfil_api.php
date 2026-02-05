@@ -1,13 +1,14 @@
 <?php
 
-require_once("usuarios.php");
+ini_set('display_errors', 'On');
+error_reporting(E_ALL & ~E_DEPRECATED);
 
-
-session_start();
+require_once("conexion.php");
 
 header('Content-Type: application/json');
-header("Access-Control-Allow-Origin: *"); // solo para pruebas
+header("Access-Control-Allow-Origin: http://localhost:8800"); // solo para pruebas
 header("Access-Control-Allow-Credentials: true"); // permite cookies
+session_start();
 
 if (!isset($_SESSION["user_id"])) {
     echo json_encode(['error' => "usuario no encontrado"]);
@@ -28,10 +29,10 @@ $user = $result->fetch_assoc();
 
 echo json_encode([
     'session' => [
-        'user_id'   => $user['id'],
-        'username'  => $user['username'],
-        'email'     => $user['email'],
-        'role'      => $user['role'],
+        'user_id' => $user['id'],
+        'username' => $user['username'],
+        'email' => $user['email'],
+        'role' => $user['role'],
         'logged_in' => true
     ]
 ]);

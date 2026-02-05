@@ -11,12 +11,10 @@ $password  = $_POST['password']  ?? null;
 
 
 
-$usersJson = login($username, $password);
-$users = json_decode($usersJson, true); 
+$users = login($username, $password);
+//$users = json_decode($usersJson, true); 
 //var_dump($users);
-if (count($users) > 0) {
-
-    session_regenerate_id(true);
+if (isset($users)) {
 
     $_SESSION['user_id']   = $users['id'];
     $_SESSION['username']  = $users['username'];

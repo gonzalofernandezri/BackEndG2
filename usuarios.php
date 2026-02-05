@@ -66,7 +66,7 @@ function login($username, $password)
             // Login correcto
             $stmt->close();
             cerrarConexion($mysqli);
-            return json_encode($usuario, JSON_UNESCAPED_UNICODE);
+            return $usuario;
         } else {
             $stmt->close();
             cerrarConexion($mysqli);
@@ -139,7 +139,6 @@ function deshabilitadoEvento($user_id, $event_id){
     return $apuntado; // true o false
 }
 
-//echo deshabilitadoEvento("9","2")
 ?>
 
 
