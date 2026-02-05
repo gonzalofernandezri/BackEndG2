@@ -54,7 +54,7 @@ if (!$titulo || !$tipo || !$fecha || !$hora || !$plazas) {
 $imagenRuta = null;
 
 if ($imagenFile && $imagenFile['error'] === UPLOAD_ERR_OK) {
-    $dir = __DIR__ . '/img'; // Ajusta la ruta según tu proyecto
+    $dir = __DIR__ . '/img/eventos'; // Ajusta la ruta según tu proyecto
 
     if (!file_exists($dir)) {
         mkdir($dir, 0755, true); // crea la carpeta si no existe
@@ -85,7 +85,7 @@ if ($imagenFile && $imagenFile['error'] === UPLOAD_ERR_OK) {
         exit;
     }
 
-    $imagenRuta = 'img/' . $nuevoNombre; // ruta relativa para usar en BD o mostrar
+    $imagenRuta = $nuevoNombre; // ruta relativa para usar en BD o mostrar
 }
 // --------------------
 // CREAR EVENTO
